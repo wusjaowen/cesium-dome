@@ -20,16 +20,17 @@ export default {
     }
   },
   mounted() {
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmOWRiNmU3My02NWQ1LTQ4MzEtOTE5OC1mM2E5NzZmMWQ5MmMiLCJpZCI6OTAyNjUsImlhdCI6MTY1MDM4MDQwNn0.RsT71-k5bufa1Wplfj1-tMRNZJCsumtSSUqGDgousvI'
+
     var vmodels = Cesium.createDefaultImageryProviderViewModels();
     let modelTree = Cesium.createDefaultTerrainProviderViewModels();
-    console.log(modelTree,'123');
+    
     const viewer = new Cesium.Viewer("cesiumContainer",{
       animation: true, //是否创建动画小器件，左下角仪表
       baseLayerPicker: true, //是否显示图层选择器
       fullscreenButton: false, //是否显示全屏按钮
       geocoder: true, //是否显示geocoder小器件，右上角查询按钮
       homeButton: false, //是否显示Home按钮
-      bottomContainer:document.getElementById('txtCont'),
       infoBox: false, //是否显示信息框
       sceneModePicker: true, //是否显示3D/2D选择器
       selectionIndicator: true, //是否显示选取指示器组件
@@ -53,10 +54,12 @@ export default {
       contextOptions: undefined, //传递给Scene对象的上下文参数（scene.options）
       sceneMode: Cesium.SceneMode.SCENE3D, //初始场景模式
       mapProjection: new Cesium.WebMercatorProjection(), //地图投影体系
-      dataSources: new Cesium.DataSourceCollection()
-      //需要进行可视化的数据源的集合
+      dataSources: new Cesium.DataSourceCollection()//需要进行可视化的数据源的集合
     
     });
+
+    viewer._cesiumWidget._creditContainer.style.display = "none";//隐藏底部版权信息
+    //bottomContainer
   },
   methods: {
 
