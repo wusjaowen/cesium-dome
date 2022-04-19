@@ -1,0 +1,72 @@
+{
+  "id": "1616134",
+  "name": "parkingManagement",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "8334923",
+      "name": "数据中心",
+      "font_class": "shujuzhongxin",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "738531",
+      "name": "会员管理",
+      "font_class": "huiyuanguanli",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    },
+    {
+      "icon_id": "1248923",
+      "name": "运营管理",
+      "font_class": "yunyingguanli",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "1315598",
+      "name": "停车场",
+      "font_class": "tingchechang",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "1986983",
+      "name": "运维管理",
+      "font_class": "yunweiguanli",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "3185729",
+      "name": "财务管理",
+      "font_class": "caiwuguanli",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "4143505",
+      "name": "系统管理",
+      "font_class": "xitongguanli",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "4506836",
+      "name": "设备管理",
+      "font_class": "shebeiguanli",
+      "unicode": "ebb7",
+      "unicode_decimal": 60343
+    },
+    {
+      "icon_id": "4661017",
+      "name": "0215路边停车场*",
+      "font_class": "lubiantingchechang",
+      "unicode": "ebfb",
+      "unicode_decimal": 60411
+    }
+  ]
+}
