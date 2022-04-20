@@ -73,7 +73,7 @@ export default {
       const orientation = Cesium.Transforms.headingPitchRollQuaternion(
         position,
         hpr
-      );//从以所提供原点为中心的航向  可设置相机位置 参数一为  经纬高 度
+      );//从以所提供原点为中心的航向  可设置相机位置 参数一为:经纬高 度  参数二为:模型旋转角度xyz轴
 
       // 默认情况下，模型是直立的并面向东
       entity = viewer.entities.add({
