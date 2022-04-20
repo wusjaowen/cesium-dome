@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/page/login/index' //登录
+import Login from '@/page/login/index' //
+
+import index_two from '@/page/login/index_two' //
 
 
 
@@ -15,5 +17,9 @@ export default new Router({
         path: "/login",
         name: "Login",
         component: Login,
+    }, {
+        path: "/login-two",
+        name: "Login-two",
+        component: index_two,
     }, ]
 })

@@ -5,7 +5,6 @@
     <div id="loadingOverlay"><h1>Loading...</h1></div>
     <div id="toolbar"></div>
 
-    <div id="txtCont">这是我的内容</div>
   </div>
 </template>
 
@@ -22,8 +21,8 @@ export default {
   mounted() {
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmOWRiNmU3My02NWQ1LTQ4MzEtOTE5OC1mM2E5NzZmMWQ5MmMiLCJpZCI6OTAyNjUsImlhdCI6MTY1MDM4MDQwNn0.RsT71-k5bufa1Wplfj1-tMRNZJCsumtSSUqGDgousvI'
 
-    var vmodels = Cesium.createDefaultImageryProviderViewModels();
-    let modelTree = Cesium.createDefaultTerrainProviderViewModels();
+    var vmodels = Cesium.createDefaultImageryProviderViewModels();//获取Cesium 的默认十一个图像图层,可在初始化时且baseLayerPicker为false时可指定使用某个图像图层显示
+    let modelTree = Cesium.createDefaultTerrainProviderViewModels();//获取Cesium 的默认两个图像图层,可在初始化时且baseLayerPicker为false时可指定使用某个图像图层显示
     
     const viewer = new Cesium.Viewer("cesiumContainer",{
       animation: true, //是否创建动画小器件，左下角仪表
@@ -40,7 +39,7 @@ export default {
       clock: new Cesium.Clock(), //用于控制当前时间的时钟对象
       selectedImageryProviderViewModel: vmodels[2], //当前图像图层的显示模型，仅baseLayerPicker设为true有意义
       imageryProviderViewModels: Cesium.createDefaultImageryProviderViewModels(), //可供BaseLayerPicker选择的图像图层ProviderViewModel数组
-      selectedTerrainProviderViewModel: undefined, //当前地形图层的显示模型，仅baseLayerPicker设为true有意义
+      selectedTerrainProviderViewModel: modelTree[1], //当前地形图层的显示模型，仅baseLayerPicker设为true有意义
       terrainProviderViewModels: Cesium.createDefaultTerrainProviderViewModels(), //可供BaseLayerPicker选择的地形图层ProviderViewModel数组
       // imageryProvider: new Cesium.UrlTemplateImageryProvider({
       //   url: "http://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
@@ -55,11 +54,9 @@ export default {
       sceneMode: Cesium.SceneMode.SCENE3D, //初始场景模式
       mapProjection: new Cesium.WebMercatorProjection(), //地图投影体系
       dataSources: new Cesium.DataSourceCollection()//需要进行可视化的数据源的集合
-    
     });
 
     viewer._cesiumWidget._creditContainer.style.display = "none";//隐藏底部版权信息
-    //bottomContainer
   },
   methods: {
 
