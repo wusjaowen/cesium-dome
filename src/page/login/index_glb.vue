@@ -31,29 +31,28 @@ export default {
       selectionIndicator: false,
     });
 
+    viewer._cesiumWidget._creditContainer.style.display = "none";//隐藏底部版权信息
+
     const viewModel = {
-      color: "Red",
+      color: "Green",
       colors: ["White", "Red", "Green", "Blue", "Yellow", "Gray"],
       alpha: 1.0,
       colorBlendMode: "Highlight",
       colorBlendModes: ["Highlight", "Replace", "Mix"],
-      colorBlendAmount: 0.5,
-      colorBlendAmountEnabled: false,
       silhouetteColor: "Red",
       silhouetteColors: ["Red", "Green", "Blue", "Yellow", "Gray"],
       silhouetteAlpha: 1.0,
       silhouetteSize: 2.0,
     };
 
-    viewer._cesiumWidget._creditContainer.style.display = "none";//隐藏底部版权信息
-
     function getColorBlendMode(colorBlendMode) {
+      console.log(Cesium.ColorBlendMode['REPLACE'],'123456789');
       return Cesium.ColorBlendMode[colorBlendMode.toUpperCase()];
     }
 
     function getColor(colorName, alpha) {
       const color = Cesium.Color[colorName.toUpperCase()];
-      return Cesium.Color.fromAlpha(color, parseFloat(alpha));
+      return Cesium.Color.fromAlpha(color, parseFloat(alpha));//设置颜色  透明度
     }
 
     let entity;
@@ -67,8 +66,8 @@ export default {
         height
       );
       const heading = Cesium.Math.toRadians(0);//0-360之间  0时 (飞机)模型向右  180时(飞机)模型向左
-      const pitch = 0; //暂时不知道
-      const roll = -1; //暂时不知道
+      const pitch = 0; //暂时不知道参数区间
+      const roll = -1; //暂时不知道参数区间
       const hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);//旋转用航向、倾斜和滚转表示的旋转。   相当于围绕xyz轴旋转
       const orientation = Cesium.Transforms.headingPitchRollQuaternion(
         position,
@@ -84,20 +83,21 @@ export default {
           uri: url,
           minimumPixelSize: 512,
           maximumScale: 2000,//可以跟着地球缩放到多少 最大20000
-          color: getColor(viewModel.color, viewModel.alpha),
+          color: getColor(viewModel.color, viewModel.alpha),//设置模型颜色 透明度
           colorBlendMode: getColorBlendMode(viewModel.colorBlendMode),
-          colorBlendAmount: parseFloat(viewModel.colorBlendAmount),
+          colorBlendAmountEnabled:true,//暂时不知道有什么用
+          colorBlendAmount: parseFloat(viewModel.colorBlendAmount),//暂时不知道有什么用
           silhouetteColor: getColor(
             viewModel.silhouetteColor,
             viewModel.silhouetteAlpha
-          ),
-          silhouetteSize: parseFloat(viewModel.silhouetteSize),
+          ),//设置模型轮廓颜色 透明度
+          silhouetteSize: parseFloat(viewModel.silhouetteSize),//模型边框的厚度
         },
       });
       viewer.trackedEntity = entity;
     }
 
-    createModel('/apies/SampleData/models/CesiumAir/Cesium_Air.glb', 100.0)
+    createModel('/apies/SampleData/models/CesiumAir/Cesium_Air.glb', 100.0)//配置了代理 文件为线上地址 /apies 为https://sandcastle.cesium.com
 
 
   },
