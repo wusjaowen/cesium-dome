@@ -5,7 +5,6 @@
     <div id="loadingOverlay"><h1>Loading...</h1></div>
     <div id="toolbar"></div>
 
-    <div id="txtCont">这是我的内容</div>
   </div>
 </template>
 

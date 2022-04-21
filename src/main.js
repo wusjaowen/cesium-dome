@@ -49,12 +49,12 @@ router.beforeEach((to, from, next) => {
         console.log("undfine")
         next()
     } else {
-        if (to.path === "/login") {
-            next()
-        } else {
-            next('/login')
-        }
-        // NProgress.done()
+        // if (to.path === "/login") {
+        next()
+            // } else {
+            //     next('/login')
+            // }
+            // // NProgress.done()
     }
 })
 
