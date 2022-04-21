@@ -9,22 +9,19 @@
 </template>
 
 <script>
-
-
 export default {
   name: "index",
   data() {
-    return {
-
-    }
+    return {};
   },
   mounted() {
-    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmOWRiNmU3My02NWQ1LTQ4MzEtOTE5OC1mM2E5NzZmMWQ5MmMiLCJpZCI6OTAyNjUsImlhdCI6MTY1MDM4MDQwNn0.RsT71-k5bufa1Wplfj1-tMRNZJCsumtSSUqGDgousvI'
+    Cesium.Ion.defaultAccessToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmOWRiNmU3My02NWQ1LTQ4MzEtOTE5OC1mM2E5NzZmMWQ5MmMiLCJpZCI6OTAyNjUsImlhdCI6MTY1MDM4MDQwNn0.RsT71-k5bufa1Wplfj1-tMRNZJCsumtSSUqGDgousvI";
 
-    var vmodels = Cesium.createDefaultImageryProviderViewModels();//获取Cesium 的默认十一个图像图层,可在初始化时且baseLayerPicker为false时可指定使用某个图像图层显示
-    let modelTree = Cesium.createDefaultTerrainProviderViewModels();//获取Cesium 的默认两个图像图层,可在初始化时且baseLayerPicker为false时可指定使用某个图像图层显示
-    
-    const viewer = new Cesium.Viewer("cesiumContainer",{
+    var vmodels = Cesium.createDefaultImageryProviderViewModels();
+    let modelTree = Cesium.createDefaultTerrainProviderViewModels();
+
+    const viewer = new Cesium.Viewer("cesiumContainer", {
       animation: true, //是否创建动画小器件，左下角仪表
       baseLayerPicker: true, //是否显示图层选择器
       fullscreenButton: false, //是否显示全屏按钮
@@ -38,9 +35,11 @@ export default {
       scene3DOnly: false, //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
       clock: new Cesium.Clock(), //用于控制当前时间的时钟对象
       selectedImageryProviderViewModel: vmodels[2], //当前图像图层的显示模型，仅baseLayerPicker设为true有意义
-      imageryProviderViewModels: Cesium.createDefaultImageryProviderViewModels(), //可供BaseLayerPicker选择的图像图层ProviderViewModel数组
-      selectedTerrainProviderViewModel: modelTree[1], //当前地形图层的显示模型，仅baseLayerPicker设为true有意义
-      terrainProviderViewModels: Cesium.createDefaultTerrainProviderViewModels(), //可供BaseLayerPicker选择的地形图层ProviderViewModel数组
+      imageryProviderViewModels:
+        Cesium.createDefaultImageryProviderViewModels(), //可供BaseLayerPicker选择的图像图层ProviderViewModel数组
+      selectedTerrainProviderViewModel: undefined, //当前地形图层的显示模型，仅baseLayerPicker设为true有意义
+      terrainProviderViewModels:
+        Cesium.createDefaultTerrainProviderViewModels(), //可供BaseLayerPicker选择的地形图层ProviderViewModel数组
       // imageryProvider: new Cesium.UrlTemplateImageryProvider({
       //   url: "http://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
       // }),
@@ -53,19 +52,33 @@ export default {
       contextOptions: undefined, //传递给Scene对象的上下文参数（scene.options）
       sceneMode: Cesium.SceneMode.SCENE3D, //初始场景模式
       mapProjection: new Cesium.WebMercatorProjection(), //地图投影体系
-      dataSources: new Cesium.DataSourceCollection()//需要进行可视化的数据源的集合
+      dataSources: new Cesium.DataSourceCollection(), //需要进行可视化的数据源的集合
     });
 
-    viewer._cesiumWidget._creditContainer.style.display = "none";//隐藏底部版权信息
-  },
-  methods: {
+    viewer._cesiumWidget._creditContainer.style.display = "none"; //隐藏底部版权信息
 
-
+    var provider = new Cesium.WebMapServiceImageryProvider({
+      url: "https://view.eumetsat.int/geoserver/ows",
+      layers: "msg_fes:rgb_airmass",
+      parameters: {
+        transparent: true, //是否透明
+        format: "image/png",
+        attribution: "myattribution",
+        version: "1.3.0",
+        // srs:'EPSG:4326',
+        // CQL_FILTER:fil,
+        // MAP_KEY:'be9a5db1671a659738216ed9f1d255fa',
+        access_token: "57cd1c59-5a6d-33dd-b480-b91ff8f9f9cd",
+      },
+    });
+    /*window.parent.viewer.imageryLayers.addImageryProvider(provider);*/
+    var image = new Cesium.ImageryLayer(provider);
+    viewer.imageryLayers.add(image);
   },
+  methods: {},
   components: {},
-}
+};
 </script>
 
 <style>
-
 </style>
