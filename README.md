@@ -7,4 +7,4 @@ login/index_glb    加载glb文件 旋转 涂色
 3.
 login/index_3dtit 通过json加载模型 旋转 涂色  裁剪 裁剪方向
 4.
-绘制 点 线 面
+绘制 点 线 面 添加图片 添加label
