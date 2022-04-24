@@ -54,6 +54,7 @@ export default {
       const color = Cesium.Color[colorName.toUpperCase()];
       return Cesium.Color.fromAlpha(color, parseFloat(alpha));//设置颜色  透明度
     }
+    
 
     let entity;
 
@@ -92,6 +93,7 @@ export default {
             viewModel.silhouetteAlpha
           ),//设置模型轮廓颜色 透明度
           silhouetteSize: parseFloat(viewModel.silhouetteSize),//模型边框的厚度
+          //clippingPlanes: clippingPlanes, //和3DTileset同理加载截面
         },
       });
       viewer.trackedEntity = entity;

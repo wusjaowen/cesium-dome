@@ -7,6 +7,8 @@ import index_two from '@/page/login/index_glb' // 载入glb模型
 
 import index_three from '@/page/login/index_3dtit' // 载入glb模型
 
+import index_line from '@/page/login/index_line'
+
 
 
 
@@ -25,5 +27,10 @@ export default new Router({
         path: "/login-three",
         name: "Login-three",
         component: index_three,
-    }, ]
+    }, {
+
+        path: "/index_line",
+        name: "index_line",
+        component: index_line,
+    }]
 })
