@@ -56,24 +56,6 @@ export default {
     });
 
     viewer._cesiumWidget._creditContainer.style.display = "none"; //隐藏底部版权信息
-
-    var provider = new Cesium.WebMapServiceImageryProvider({
-      url: "https://view.eumetsat.int/geoserver/ows",
-      layers: "msg_fes:rgb_airmass",
-      parameters: {
-        transparent: true, //是否透明
-        format: "image/png",
-        attribution: "myattribution",
-        version: "1.3.0",
-        // srs:'EPSG:4326',
-        // CQL_FILTER:fil,
-        // MAP_KEY:'be9a5db1671a659738216ed9f1d255fa',
-        access_token: "57cd1c59-5a6d-33dd-b480-b91ff8f9f9cd",
-      },
-    });
-    /*window.parent.viewer.imageryLayers.addImageryProvider(provider);*/
-    var image = new Cesium.ImageryLayer(provider);
-    viewer.imageryLayers.add(image);
   },
   methods: {},
   components: {},

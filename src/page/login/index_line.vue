@@ -37,7 +37,7 @@ export default {
           //NONE 绝对高程
           //RELATIVE_TO_GROUND 设置地形相对高度 (fromDegrees第三个参数决定高度)
         },
-        //description
+        //description   //值为 html字符串
     });
     //画线
     let line = viewer.entities.add({  //添加一个实体，仅需要传递一个简单JSON对象，返回值是一个Entity对象

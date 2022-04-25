@@ -7,9 +7,15 @@ import index_two from '@/page/login/index_glb' // 载入glb模型
 
 import index_three from '@/page/login/index_3dtit' // 载入glb模型
 
-import index_line from '@/page/login/index_line'
+import index_line from '@/page/login/index_line' //绘制 点 线 矩形 加入 图片 label
 
+import index_color from '@/page/login/index_color' //替换颜色
 
+import visualFly from "@/page/login/visualFly" //视角飞行 移动摄像头
+
+import modalFly from "@/page/login/modalFly" //移动模型位置
+
+import dome from '@/page/login/dome' //尝试
 
 
 Vue.use(Router)
@@ -28,9 +34,25 @@ export default new Router({
         name: "Login-three",
         component: index_three,
     }, {
-
         path: "/index_line",
         name: "index_line",
         component: index_line,
+    }, {
+        path: "/index_color",
+        name: "index_color",
+        component: index_color,
+    }, {
+        path: "/visualFly",
+        name: "visualFly",
+        component: visualFly,
+    }, {
+        path: "/dome",
+        name: "dome",
+        component: dome,
+    }, {
+
+        path: "/modalFly",
+        name: "modalFly",
+        component: modalFly,
     }]
 })
