@@ -82,8 +82,8 @@ export default {
         orientation: orientation,
         model: {
           uri: url,
-          minimumPixelSize: 512,
-          maximumScale: 2000,//可以跟着地球缩放到多少 最大20000
+          minimumPixelSize: 512,//模型最小像素
+          maximumScale: 2000,//模型最小像素 最大20000
           color: getColor(viewModel.color, viewModel.alpha),//设置模型颜色 透明度
           colorBlendMode: getColorBlendMode(viewModel.colorBlendMode),
           colorBlendAmountEnabled:true,//暂时不知道有什么用

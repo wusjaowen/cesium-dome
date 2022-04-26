@@ -32,37 +32,6 @@ export default {
     { longitude: 107.942392, latitude: 29.559967, height: 70000, time: 110 },
     { longitude: 106.549265, latitude: 29.559967, height: 30000, time: 120 }]
 
-    function fly() {
-      if (count >= positionList.length) {
-        return;
-      }
-      var position = positionList[count];
-
-      //移动摄像头
-      viewer.camera.flyTo({
-        //目标位置
-        destination: Cesium.Cartesian3.fromDegrees(
-          position.longitude,
-          position.latitude,
-          position.height
-        ),
-        //移动时间
-        duration: parseFloat(position.duration),
-        //摄像头角度
-        orientation: {
-          heading: Cesium.Math.toRadians(position.heading),
-          pitch: Cesium.Math.toRadians(position.pitch),
-          roll: Cesium.Math.toRadians(position.roll)
-        },
-        complete: function () {
-          fly();
-        }
-      });
-      //
-      count++;
-    }
-
-    // fly();
 
     let start = Cesium.JulianDate.fromDate(new Date());
     let property = createProperty(positionList);
@@ -74,8 +43,8 @@ export default {
       orientation: new Cesium.VelocityOrientationProperty(property),
       model: {
         uri: url,
-        // "minimumPixelSize": 100,
-        // "maximumScale": 50,
+        minimumPixelSize: 512,//模型最小像素
+          maximumScale: 2000,//模型最小像素 最大20000
         scale: 1000,
       },
     });
