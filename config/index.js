@@ -26,6 +26,11 @@ module.exports = {
                 changeOrigin: true,
                 pathRewrite: { '^/apies': '' }
             },
+            '/apip': {
+                target: 'http://t0.tianditu.gov.cn', //代理目标的基础路径
+                changeOrigin: true,
+                pathRewrite: { '^/apip': '' }
+            }
         },
 
         // Various Dev Server settings

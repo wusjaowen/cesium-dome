@@ -24,8 +24,6 @@ export default {
 
     let url = '/apies/SampleData/models/CesiumAir/Cesium_Air.glb';
 
-    let count = 0;
-
     let positionList = [{ longitude: 116.405419, latitude: 39.918034, height: 0, time: 0 },
     { longitude: 120.2821, latitude: 33.918145, height: 30000, time: 30 },
     { longitude: 115.497402, latitude: 39.344641, height: 70000, time: 60 },

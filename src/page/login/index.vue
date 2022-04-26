@@ -5,6 +5,8 @@
     <div id="loadingOverlay"><h1>Loading...</h1></div>
     <div id="toolbar"></div>
 
+    <div id="test" style="position: absolute;color:aqua;z-index: 99;">测试 overlay</div>
+
   </div>
 </template>
 
@@ -20,6 +22,8 @@ export default {
 
     var vmodels = Cesium.createDefaultImageryProviderViewModels();
     let modelTree = Cesium.createDefaultTerrainProviderViewModels();
+
+    
 
     const viewer = new Cesium.Viewer("cesiumContainer", {
       animation: true, //是否创建动画小器件，左下角仪表
@@ -53,9 +57,28 @@ export default {
       sceneMode: Cesium.SceneMode.SCENE3D, //初始场景模式
       mapProjection: new Cesium.WebMercatorProjection(), //地图投影体系
       dataSources: new Cesium.DataSourceCollection(), //需要进行可视化的数据源的集合
+
+       requestRenderMode : true,//画面不发生变化时,停止渲染  节省性能
     });
 
+    viewer.scene.debugShowFramesPerSecond = true;//展示fps
+
     viewer._cesiumWidget._creditContainer.style.display = "none"; //隐藏底部版权信息
+
+
+//在某个世界坐标一直显示 一个dom 不会被遮挡
+    var htmlOverlay = document.getElementById('test');
+
+    //preRender获取当前场景每帧渲染前的事件，监听该事件在每帧渲染之前触发
+    viewer.scene.preRender.addEventListener(() => { //一直触发
+          var position = Cesium.Cartesian3.fromDegrees(-75.59777, 40.03883);
+          //世界坐标转化为屏幕坐标
+          var canvasPosition = viewer.scene.cartesianToCanvasCoordinates(position);
+          if (Cesium.defined(canvasPosition)) {
+              htmlOverlay.style.top = canvasPosition.y + 'px';
+        htmlOverlay.style.left = canvasPosition.x + 'px';
+          }
+      });
   },
   methods: {},
   components: {},
