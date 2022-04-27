@@ -15,6 +15,10 @@ import visualFly from "@/page/login/visualFly" //视角飞行 移动摄像头
 
 import modalFly from "@/page/login/modalFly" //移动模型位置
 
+import addWmts from '@/page/login/addWmts' //加载天地图数据
+
+import primitiveORentities from '@/page/login/primitiveORentities' //primitive与entities方法构造集合体
+
 import dome from '@/page/login/dome' //尝试
 
 
@@ -50,9 +54,16 @@ export default new Router({
         name: "dome",
         component: dome,
     }, {
-
         path: "/modalFly",
         name: "modalFly",
         component: modalFly,
+    }, {
+        path: "/addWmts",
+        name: "addWmts",
+        component: addWmts,
+    }, {
+        path: "/primitiveORentities",
+        name: "primitiveORentities",
+        component: primitiveORentities,
     }]
 })

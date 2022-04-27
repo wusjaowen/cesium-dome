@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import url from './logo.png'
 export default {
   name: "index",
   data() {
@@ -69,9 +70,14 @@ export default {
           //   -111.047063,42.000709,
           -111.047063, 44.476286,
           -111.05254, 45.002073]),
-        material: Cesium.Color.BLUE.withAlpha(0.5), //材质
+        // material: Cesium.Color.BLUE.withAlpha(0.5), //材质
+        material: url,//图片材质
         outline: true, //是否显示轮廓
-        outlineColor: Cesium.Color.RED //轮廓的颜色
+        outlineColor: Cesium.Color.RED, //轮廓的颜色
+
+        //  clampToGround: true, //贴地
+        // TERRAIN 将仅对地形进行分类;CESIUM_3D_TILE 将仅对3D Tiles进行分类;BOTH    将同时对Terrain和3D Tiles进行分类。
+        classificationType: Cesium.ClassificationType.TERRAIN, //对哪些目标生效
       }
     });
 
