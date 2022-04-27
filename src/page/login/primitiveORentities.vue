@@ -146,13 +146,10 @@ export default {
         geometry: polylineVolumeOutlineGeometry,
       }),
       appearance: new Cesium.PolylineMaterialAppearance({
-        // flat : true,
-        // translucent: false,
-        // closed: true,
         // 材质  铁路材质
         material: Cesium.Material.fromType(Cesium.Material.PolylineDashType, {
           color: Cesium.Color.BLACK,
-          gapColor: Cesium.Color.WHITE,
+          gapColor: Cesium.Color.WHITE,//缺口颜色
           dashLength: 30
         })
 
