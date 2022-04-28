@@ -19,6 +19,8 @@ import addWmts from '@/page/login/addWmts' //加载天地图数据
 
 import primitiveORentities from '@/page/login/primitiveORentities' //primitive与entities方法构造集合体
 
+import waterRipple from "@/page/login/waterRipple" // 水波纹效果
+
 import dome from '@/page/login/dome' //尝试
 
 
@@ -65,5 +67,9 @@ export default new Router({
         path: "/primitiveORentities",
         name: "primitiveORentities",
         component: primitiveORentities,
+    }, {
+        path: "/waterRipple",
+        name: "waterRipple",
+        component: waterRipple,
     }]
 })

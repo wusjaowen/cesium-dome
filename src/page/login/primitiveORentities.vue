@@ -142,10 +142,10 @@ export default {
 
 
     viewer.scene.primitives.add(new Cesium.Primitive({
-      geometryInstances: new Cesium.GeometryInstance({
+      geometryInstances: new Cesium.GeometryInstance({ //构建形状
         geometry: polylineVolumeOutlineGeometry,
       }),
-      appearance: new Cesium.PolylineMaterialAppearance({
+      appearance: new Cesium.PolylineMaterialAppearance({  //渲染效果
         // 材质  铁路材质
         material: Cesium.Material.fromType(Cesium.Material.PolylineDashType, {
           color: Cesium.Color.BLACK,
