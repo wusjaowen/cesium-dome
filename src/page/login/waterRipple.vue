@@ -39,6 +39,7 @@ var worldRectangle = viewer.scene.primitives.add(new Cesium.Primitive({
             vertexFormat : Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT,
         })
     }),
+    //使用系统自带的条纹样式
     appearance : new Cesium.EllipsoidSurfaceAppearance({
         aboveGround : true,
         material : new Cesium.Material({
