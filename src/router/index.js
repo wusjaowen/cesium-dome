@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/page/login/index' //初始化默认模型
+import indexs from '@/page/login/index' //初始化默认模型
 
-import index_two from '@/page/login/index_glb' // 载入glb模型
+import index_glb from '@/page/login/index_glb' // 载入glb模型
 
 
-import index_three from '@/page/login/index_3dtit' // 载入glb模型
+import index_3dtit from '@/page/login/index_3dtit' // 载入glb模型
 
 import index_line from '@/page/login/index_line' //绘制 点 线 矩形 加入 图片 label
 
@@ -21,6 +21,8 @@ import primitiveORentities from '@/page/login/primitiveORentities' //primitive�
 
 import waterRipple from "@/page/login/waterRipple" // 水波纹效果
 
+import pick3Dtileset from '@/page/login/pick3Dtileset' // 拾取事件
+
 import dome from '@/page/login/dome' //尝试
 
 
@@ -28,17 +30,17 @@ Vue.use(Router)
 
 export default new Router({
     routes: [{
-        path: "/login",
-        name: "Login",
-        component: Login,
+        path: "/indexs",
+        name: "indexs",
+        component: indexs,
     }, {
-        path: "/login-two",
-        name: "Login-two",
-        component: index_two,
+        path: "/index_glb",
+        name: "index_glb",
+        component: index_glb,
     }, {
-        path: "/login-three",
-        name: "Login-three",
-        component: index_three,
+        path: "/index_3dtit",
+        name: "index_3dtit",
+        component: index_3dtit,
     }, {
         path: "/index_line",
         name: "index_line",
@@ -71,5 +73,10 @@ export default new Router({
         path: "/waterRipple",
         name: "waterRipple",
         component: waterRipple,
+    }, {
+
+        path: "/pick3Dtileset",
+        name: "pick3Dtileset",
+        component: pick3Dtileset,
     }]
 })

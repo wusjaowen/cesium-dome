@@ -28,6 +28,7 @@ export default {
       format: 'image/jpeg',
       subdomains: ["t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7"],
       tileMatrixSetID: "GoogleMapsCompatible",
+      
     });
 
 
@@ -45,6 +46,10 @@ export default {
             style: "default",
             format: "image/jpeg",
             tileMatrixSetID: "GoogleMapsCompatible",
+            rectangle:Cesium.Rectangle.fromDegrees(0,0,117,32),//最小纬度,.最小经度,最大纬度,最大经度
+
+
+
             // show: false
         }));
 
