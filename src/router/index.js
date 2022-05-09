@@ -24,7 +24,7 @@ import pick3Dtileset from '@/page/login/pick3Dtileset' // 拾取事件
 
 import changeMaterial from '@/page/login/changeMaterial' //改变材质(或动态)
 
-import dynamicTexture from '@/page/login/dynamicTexture' // 动态纹理
+import dynamicTexture from '@/page/login/dynamicTexture' // primitive和entity 动态纹理
 
 import dome from '@/page/login/dome' //尝试
 

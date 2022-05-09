@@ -59,7 +59,6 @@ export default {
       result.color = Cesium.Property.getValueOrClonedDefault(this._color, time, Cesium.Color.WHITE, result.color);
       result.image = Cesium.Material.PolylineTrailLinkImage;
       result.time = (((new Date()).getTime() - this._time) % this.duration) / this.duration;
-      console.log(result, '123123123123');
       return result;
     }
     PolylineTrailLinkMaterialProperty.prototype.equals = function (other) {
@@ -80,7 +79,7 @@ export default {
     material.diffuse = (colorImage.rgb+color.rgb)/2.0;\n\
     return material;\n\
 }";
-//添加自定义材质
+    //添加自定义材质
     Cesium.Material._materialCache.addMaterial(Cesium.Material.PolylineTrailLinkType, {
       fabric: {
         type: Cesium.Material.PolylineTrailLinkType,
@@ -133,6 +132,56 @@ export default {
     });
 
     viewer.flyTo(greenTube)
+
+    //使用primitive绘制矩形, 动态纹理
+   const rectangle = new Cesium.RectangleGeometry({
+    ellipsoid : Cesium.Ellipsoid.WGS84,
+    height : 10000.0,
+    rectangle: Cesium.Rectangle.fromDegrees(
+       118.286419, 31.864436,
+        180.0,
+        85.051129
+    ),
+    vertexFormat: Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT,
+});
+
+const reactgeometry = Cesium.RectangleGeometry.createGeometry(rectangle);
+
+const geometry = new Cesium.GeometryInstance({
+    geometry: reactgeometry,
+});
+
+
+
+
+    viewer.scene.primitives.add(new Cesium.Primitive({
+      geometryInstances: geometry,
+      asynchronous : true,
+      appearance: new Cesium.PolylineMaterialAppearance({  //渲染效果
+        // 材质  铁路材质
+        material: new Cesium.Material({
+          fabric: {
+            uniforms: {
+              image: require('./static/colors1.png'),
+              animationSpeed: 0.001,
+              color: new Cesium.Color(0.0, 0.0, 1.0, 0.5),
+              time: 0
+            },
+            source :
+                    'czm_material czm_getMaterial(czm_materialInput materialInput) { \n\
+                    czm_material material = czm_getDefaultMaterial(materialInput);\n\
+                    vec2 st = materialInput.st;\n\
+                    float time = czm_frameNumber * animationSpeed;\n\
+                    vec4 colorImage = texture2D(image,vec2(fract(st.s - time), st.t));\n\
+                    material.alpha = colorImage.a;\n\
+                    material.diffuse = colorImage.rgb;\n\
+                    return material;\n\
+                    } \n'
+          }
+        })
+
+      })
+    }));
 
   },
   methods: {},
