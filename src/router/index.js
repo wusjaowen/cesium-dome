@@ -26,6 +26,8 @@ import changeMaterial from '@/page/login/changeMaterial' //改变材质(或动�
 
 import dynamicTexture from '@/page/login/dynamicTexture' // primitive和entity 动态纹理
 
+import geoJson from '@/page/login/geoJson' //geoJson点添加 修改样式
+
 import dome from '@/page/login/dome' //尝试
 
 
@@ -88,5 +90,9 @@ export default new Router({
         path: "/dynamicTexture",
         name: "dynamicTexture",
         component: dynamicTexture,
+    }, {
+        path: "/geoJson",
+        name: "geoJson",
+        component: geoJson,
     }]
 })

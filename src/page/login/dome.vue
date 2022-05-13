@@ -23,165 +23,41 @@ export default {
 
     viewer.scene.debugShowFramesPerSecond = true;//展示fps
 
-    viewer._cesiumWidget._creditContainer.style.display = "none"; //隐藏底部版权信息
-
-    //Cesium  流动线条纹理 拓展类
-    function PolylineTrailLinkMaterialProperty(color, duration) {
-      this._definitionChanged = new Cesium.Event();
-      this._color = undefined;
-      this._colorSubscription = undefined;
-      this.color = color;
-      this.duration = duration;
-      this._time = (new Date()).getTime();
-    }
-
-    Object.defineProperties(PolylineTrailLinkMaterialProperty.prototype, {
-      isConstant: {
-        get: function () {
-          return false;
-        }
-      },
-      definitionChanged: {
-        get: function () {
-          return this._definitionChanged;
-        }
-      },
-      color: Cesium.createPropertyDescriptor('color')
-    });
-
-    PolylineTrailLinkMaterialProperty.prototype.getType = function (time) {
-      return 'PolylineTrailLink';
-    }
-    PolylineTrailLinkMaterialProperty.prototype.getValue = function (time, result) {
-      if (!Cesium.defined(result)) {
-        result = {};
-      }
-      result.color = Cesium.Property.getValueOrClonedDefault(this._color, time, Cesium.Color.WHITE, result.color);
-      result.image = Cesium.Material.PolylineTrailLinkImage;
-      result.time = (((new Date()).getTime() - this._time) % this.duration) / this.duration;
-      return result;
-    }
-    PolylineTrailLinkMaterialProperty.prototype.equals = function (other) {
-      return this === other || (other instanceof PolylineTrailLinkMaterialProperty && Property.equals(this._color, other._color))
-    };
-
-    Cesium.PolylineTrailLinkMaterialProperty = PolylineTrailLinkMaterialProperty;
-    Cesium.Material.PolylineTrailLinkType = 'PolylineTrailLink';
-    Cesium.Material.PolylineTrailLinkImage = require('./static/colors1.png');//图片
-
-    //着色器代码
-    Cesium.Material.PolylineTrailLinkSource = "czm_material czm_getMaterial(czm_materialInput materialInput)\n\
-{\n\
-    czm_material material = czm_getDefaultMaterial(materialInput);\n\
-    vec2 st = materialInput.st;\n\
-    vec4 colorImage = texture2D(image, vec2(fract(st.s - time), st.t));\n\
-    material.alpha = colorImage.a * color.a;\n\
-    material.diffuse = (colorImage.rgb+color.rgb)/2.0;\n\
-    return material;\n\
-}";
-    //添加自定义材质
-    Cesium.Material._materialCache.addMaterial(Cesium.Material.PolylineTrailLinkType, {
-      fabric: {
-        type: Cesium.Material.PolylineTrailLinkType,
-        uniforms: {
-          color: new Cesium.Color(1.0, 0.0, 0.0, 0.5),
-          image: Cesium.Material.PolylineTrailLinkImage,
-          time: 0
-        },
-        source: Cesium.Material.PolylineTrailLinkSource
-      },
-      translucent: function (material) {
-        return true;
-      }
-    })
-
-
-    let greenTube = viewer.entities.add({
-      name: '围墙',
-      wall: {
-        positions: Cesium.Cartesian3.fromDegreesArrayHeights([
-          118.286419, 31.864436, 20000.0,
-          119.386419, 31.864436, 20000.0,
-          119.386419, 32.864436, 20000.0,
-          118.286419, 32.864436, 20000.0,
-          118.286419, 31.864436, 20000.0,
-        ]),
-        //CallbackProperty 方法不断返回新的值
-        material: new Cesium.PolylineTrailLinkMaterialProperty(Cesium.Color.BLUE, 3000),
-      }
-    });
-
-    //画矩形
-    var wyoming = viewer.entities.add({  //添加一个实体，仅需要传递一个简单JSON对象，返回值是一个Entity对象
-      name: '这是一个矩形',
-      properties: '3',
-      polygon: {
-        hierarchy: Cesium.Cartesian3.fromDegreesArray([//一组地理坐标
-          109.080842, 45.002073,
-          104.058488, 44.996596,
-          104.053011, 41.003906,
-          107.919731, 41.003906,
-          111.047063, 40.998429,
-          111.047063, 44.476286,
-          111.05254, 45.002073]),
-        // material: Cesium.Color.BLUE.withAlpha(0.5), //材质
-        material: new Cesium.PolylineTrailLinkMaterialProperty(Cesium.Color.BLUE, 3000),
-        // TERRAIN 将仅对地形进行分类;CESIUM_3D_TILE 将仅对3D Tiles进行分类;BOTH    将同时对Terrain和3D Tiles进行分类。
-        classificationType: Cesium.ClassificationType.TERRAIN, //对哪些目标生效
-      }
-    });
-
-    viewer.flyTo(greenTube)
-
-    //使用primitive绘制矩形, 动态纹理
-   const rectangle = new Cesium.RectangleGeometry({
-    ellipsoid : Cesium.Ellipsoid.WGS84,
-    height : 10000.0,
-    rectangle: Cesium.Rectangle.fromDegrees(
-       118.286419, 31.864436,
-        180.0,
-        85.051129
-    ),
-    vertexFormat: Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT,
-});
-
-const reactgeometry = Cesium.RectangleGeometry.createGeometry(rectangle);
-
-const geometry = new Cesium.GeometryInstance({
-    geometry: reactgeometry,
-});
 
 
 
+// （1.  show 是否显示粒子系统
+// （2.  updateCallback 每帧更新粒子的回调
+// （3.  emitter 粒子发射器，就是发射粒子的方式。cesium粒子系统提供的发射器有BoxEmitter盒子发射器，发射的粒子都在一个盒子内。CircleEmitter圆形发射器，发射的粒子都在一个圆形范围内。ConeEmitter锥形发射器，发射的粒子都在一个圆锥内。SphereEmitter球体发射器，发射的粒子都在一个包围球内。
+// （4.  modelMatrix 粒子系统的偏移矩阵
+// （5.  emitterModelMatrix 粒子系统相对自身位置的偏移矩阵
+// （6.  emissionRate 单位粒子的发射数量
+// （7.  bursts 特定时间粒子产生的数量，可用做粒子爆炸效果
+// （8.  loop 粒子系统是否一直循环存在
+// （9.  scale 粒子的缩放比例
+// （10. startScale粒子产生时候的缩放比例
+// （11. endScale粒子消亡时候的缩放比例
+// （12. color粒子的颜色
+// （13. startColor 粒子开始产生时候的颜色
+// （14. endColor 粒子消亡时候的颜色
+// （15. image 用于产生粒子的图片
+// （16. imageSize 粒子图片的尺寸
+// （17. minimumImageSize 随机粒子产生时候最小的尺寸
+// （18. maximumImageSize 随机粒子产生时候最大的尺寸
+// （19. sizeInMeters 粒子尺寸的单位是像素还是米
+// （20. speed 粒子的速度
+// （21. minimumSpeed 随机粒子的最小速度
+// （22. maximumSpeed 随机粒子的最大速度
+// （23. lifetime 粒子系统的生命周期
+// （24. particleLife 粒子的生命周期
+// （25. minimumParticleLife 随机粒子的最小生命周期
+// （26. maximumParticleLife 随机粒子的最大生命周期
+// （27. mass粒子的质量
+// （28. minimumMass 随机粒子的最小质量
+// （29. maximumMass 随机粒子的最大质量
 
-    viewer.scene.primitives.add(new Cesium.Primitive({
-      geometryInstances: geometry,
-      asynchronous : true,
-      appearance: new Cesium.PolylineMaterialAppearance({  //渲染效果
-        // 材质  铁路材质
-        material: new Cesium.Material({
-          fabric: {
-            uniforms: {
-              image: require('./static/colors1.png'),
-              animationSpeed: 0.001,
-              color: new Cesium.Color(0.0, 0.0, 1.0, 0.5),
-              time: 0
-            },
-            source :
-                    'czm_material czm_getMaterial(czm_materialInput materialInput) { \n\
-                    czm_material material = czm_getDefaultMaterial(materialInput);\n\
-                    vec2 st = materialInput.st;\n\
-                    float time = czm_frameNumber * animationSpeed;\n\
-                    vec4 colorImage = texture2D(image,vec2(fract(st.s - time), st.t));\n\
-                    material.alpha = colorImage.a;\n\
-                    material.diffuse = colorImage.rgb;\n\
-                    return material;\n\
-                    } \n'
-          }
-        })
 
-      })
-    }));
+ 
 
   },
   methods: {},
