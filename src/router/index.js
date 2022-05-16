@@ -28,6 +28,10 @@ import dynamicTexture from '@/page/login/dynamicTexture' // primitive和entity �
 
 import geoJson from '@/page/login/geoJson' //geoJson点添加 修改样式
 
+import particle from '@/page/login/particle' // 基本的烟花粒子效果
+
+import perspectiveRange from '@/page/login/perspectiveRange' //限制视角范围  暂2d
+
 import dome from '@/page/login/dome' //尝试
 
 
@@ -94,5 +98,14 @@ export default new Router({
         path: "/geoJson",
         name: "geoJson",
         component: geoJson,
+    }, {
+        path: "/particle",
+        name: "particle",
+        component: particle,
+    }, {
+        path: "/perspectiveRange",
+        name: "perspectiveRange",
+        component: perspectiveRange,
     }]
+
 })
