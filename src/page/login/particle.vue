@@ -24,7 +24,7 @@ export default {
     const scene = viewer.scene;
     scene.debugShowFramesPerSecond = true; //fps
 
-
+    //建立转换矩阵
     const modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
       Cesium.Cartesian3.fromDegrees(-75.59777, 40.03883)
     );
@@ -63,6 +63,7 @@ export default {
       );
 
       const force = function (particle) {
+        //将局部坐标转换为椭球笛卡尔坐标
         const position = Cesium.Matrix4.multiplyByPoint(
           worldToParticle,
           particle.position,
