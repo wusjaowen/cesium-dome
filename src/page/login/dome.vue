@@ -21,91 +21,74 @@ export default {
       shouldAnimate: true,
     });
 
-  var west = Cesium.Math.toRadians(-77.0);//南
-var south = Cesium.Math.toRadians(38.0);//东
-var east = Cesium.Math.toRadians(-72.0);//北
-var north = Cesium.Math.toRadians(42.0);//西
-//方便查看范围
-var maxExtent = new Cesium.Rectangle(west, south, east, north);//指定为经度和纬度坐标的二维区域。
-viewer.entities.add({
-    rectangle : {
-        coordinates : maxExtent,
-        fill : false,
+    //添加球
+var redSphere = viewer.entities.add({
+    name : '红色的球',
+    position: Cesium.Cartesian3.fromDegrees(107.0, 40.0, 5.0),
+    ellipsoid : {
+        radii : new Cesium.Cartesian3(10.0, 10.0, 10.0),
+        material : Cesium.Color.RED.withAlpha(0.5),
         outline : true,
-        outlineColor : Cesium.Color.WHITE
+        outlineColor : Cesium.Color.BLACK
     }
 });
-var camera = viewer.scene.camera;
-viewer.scene.screenSpaceCameraController.inertiaTranslate = 0;//平移惯性。值为零时，相机将没有惯性
-//监听时间变化
-viewer.clock.onTick.addEventListener(function() {
-  //如果是2d模式
-    if (viewer.scene.mode === Cesium.SceneMode.SCENE2D) {
-      //屏幕坐标 转椭球面笛卡尔坐标
-        var topLeft = camera.pickEllipsoid(new Cesium.Cartesian2(0, 0));
-        var topRight = camera.pickEllipsoid(new Cesium.Cartesian2(viewer.canvas.clientWidth, 0));
-        var bottomLeft = camera.pickEllipsoid(new Cesium.Cartesian2(0, viewer.canvas.clientHeight));
-        var bottomRight = camera.pickEllipsoid(new Cesium.Cartesian2(viewer.canvas.clientWidth, viewer.canvas.clientHeight));
-        
-        if (topLeft && topRight && bottomLeft && bottomRight) {
-            //判断点是否在矩形区域内部
-            topLeft = Cesium.Ellipsoid.WGS84.cartesianToCartographic(topLeft);
-            topRight = Cesium.Ellipsoid.WGS84.cartesianToCartographic(topRight);
-            bottomLeft = Cesium.Ellipsoid.WGS84.cartesianToCartographic(bottomLeft);
-            bottomRight = Cesium.Ellipsoid.WGS84.cartesianToCartographic(bottomRight);
-            var visibleExtent = Cesium.Rectangle.fromCartographicArray([topLeft, topRight, bottomLeft, bottomRight]);
-            //如果不包含,表示在矩形外
-            if( !(Cesium.Rectangle.contains(maxExtent,topLeft) 
-                &&Cesium.Rectangle.contains(maxExtent,topRight) 
-                &&Cesium.Rectangle.contains(maxExtent,bottomLeft) 
-                &&Cesium.Rectangle.contains(maxExtent,bottomRight) 
-            )){
-              //validExtent 矩形边界与 当前视角 的交集
-                var validExtent =Cesium.Rectangle.intersection(maxExtent, visibleExtent,new Cesium.Rectangle()); 
-                viewer.camera.setView({
-                    destination: validExtent
-                });
-            }
-        } else {
-          console.log(3);
-            viewer.camera.setView({
-                    destination: maxExtent
-                });
-        }
-    }
-});
+viewer.zoomTo(viewer.entities);
+var scene = viewer.scene;
 
+let ptTarget = Cesium.Cartesian3.fromDegrees(107.0, 40.0, 0.0);
+function getMatrix(pt){
+    //目标点
+    let ptA = ptTarget;
+    //物体点
+    let ptB = pt;
+    console.log(pt);
+    let ptB1 = Cesium.Cartesian3.normalize(ptB,new Cesium.Cartesian3());
+    let vecBA = Cesium.Cartesian3.subtract(ptA,ptB,new Cesium.Cartesian3());
+    let ay =Cesium.Cartesian3.normalize(vecBA,new Cesium.Cartesian3());
+    let ax = Cesium.Cartesian3.cross(ptB1,ay,new Cesium.Cartesian3());
+    ax = Cesium.Cartesian3.normalize(ax,new Cesium.Cartesian3())
+    let az = Cesium.Cartesian3.cross(ax,ay,new Cesium.Cartesian3());
+    az = Cesium.Cartesian3.normalize(az,new Cesium.Cartesian3());
+    //Cesium.Cartesian3.cross(left, right, result) ，计算两个坐标的叉(外)积
+    //Cesium.Cartesian3.normalize 标准化
+    //Cesium.Cartesian3.subtract(left, right, result)，两个矩阵相减
 
+    // cesium矩阵是行主序
+    return new Cesium.Matrix3(
+        ax.x, ax.y, ax.z,
+        ay.x, ay.y, ay.z,
+        az.x, az.y, az.z
+        );
+}
+let handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+handler.setInputAction(function(movement) {
+    var earthPosition = viewer.camera.pickEllipsoid(movement.position, scene.globe.ellipsoid);//选择世界上椭球体或地图表面上的点
+    
 
-    // （1.  show 是否显示粒子系统
-    // （2.  updateCallback 每帧更新粒子的回调
-    // （3.  emitter 粒子发射器，就是发射粒子的方式。cesium粒子系统提供的发射器有BoxEmitter盒子发射器，发射的粒子都在一个盒子内。CircleEmitter圆形发射器，发射的粒子都在一个圆形范围内。ConeEmitter锥形发射器，发射的粒子都在一个圆锥内。SphereEmitter球体发射器，发射的粒子都在一个包围球内。
-    // （4.  modelMatrix 粒子系统的偏移矩阵
-    // （5.  emitterModelMatrix 粒子系统相对自身位置的偏移矩阵
-    // （6.  emissionRate 单位粒子的发射数量
-    // （7.  bursts 特定时间粒子产生的数量，可用做粒子爆炸效果
-    // （8.  loop 粒子系统是否一直循环存在
-    // （9.  scale 粒子的缩放比例
-    // （10. startScale粒子产生时候的缩放比例
-    // （11. endScale粒子消亡时候的缩放比例
-    // （12. color粒子的颜色
-    // （13. startColor 粒子开始产生时候的颜色
-    // （14. endColor 粒子消亡时候的颜色
-    // （15. image 用于产生粒子的图片
-    // （16. imageSize 粒子图片的尺寸
-    // （17. minimumImageSize 随机粒子产生时候最小的尺寸
-    // （18. maximumImageSize 随机粒子产生时候最大的尺寸
-    // （19. sizeInMeters 粒子尺寸的单位是像素还是米
-    // （20. speed 粒子的速度
-    // （21. minimumSpeed 随机粒子的最小速度
-    // （22. maximumSpeed 随机粒子的最大速度
-    // （23. lifetime 粒子系统的生命周期
-    // （24. particleLife 粒子的生命周期
-    // （25. minimumParticleLife 随机粒子的最小生命周期
-    // （26. maximumParticleLife 随机粒子的最大生命周期
-    // （27. mass粒子的质量
-    // （28. minimumMass 随机粒子的最小质量
-    // （29. maximumMass 随机粒子的最大质量
+    if (!Cesium.defined(earthPosition)) 
+        return ;
+
+    var hpRoll = new Cesium.HeadingPitchRoll();
+    var fixedFrameTransform = Cesium.Transforms.localFrameToFixedFrameGenerator('north', 'west');
+    // west   南
+    // south  东
+    // east   北
+    // north  西
+
+    //计算世界矩阵
+    var m1 = Cesium.Transforms.headingPitchRollToFixedFrame(earthPosition, hpRoll, Cesium.Ellipsoid.WGS84, fixedFrameTransform);
+
+    var rotateMatrix = getMatrix(earthPosition);
+
+    Cesium.Matrix4.multiplyByMatrix3(m1, rotateMatrix, m1);
+
+    viewer.scene.primitives.add(Cesium.Model.fromGltf({
+        url: '/apies/SampleData/models/CesiumAir/Cesium_Air.glb',
+        modelMatrix:m1,
+        scale: 1
+    }))
+}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
 
 
 

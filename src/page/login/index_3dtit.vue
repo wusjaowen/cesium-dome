@@ -86,6 +86,7 @@ export default {
               tileset.root.transform,
               new Cesium.Cartesian3()
             );
+            //Cesium.Cartographic.fromCartesian世界坐标转经纬度
             const transformCartographic = Cesium.Cartographic.fromCartesian(
               transformCenter
             );
